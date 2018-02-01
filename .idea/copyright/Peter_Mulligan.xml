@@ -1,6 +1,7 @@
 <component name="CopyrightManager">
   <copyright>
+    <option name="allowReplaceKeyword" value="Last modified $file.lastModified." />
     <option name="myName" value="Peter Mulligan" />
-    <option name="notice" value="Created on &amp;#36;today by Peter Mulligan.&#10;Copyright (c) &amp;#36;today.year.&#10;&#10;Last modified &amp;#36;file.lastModified." />
+    <option name="notice" value="Created on &amp;#36;today by Peter Mulligan.&#10;Copyright (c) &amp;#36;today.year." />
   </copyright>
 </component>
