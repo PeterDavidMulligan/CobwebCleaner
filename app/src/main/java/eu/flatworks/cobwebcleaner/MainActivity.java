@@ -1,5 +1,7 @@
 package eu.flatworks.cobwebcleaner;
 
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,5 +44,10 @@ public class MainActivity extends AppCompatActivity implements AppListAdapter.It
     @Override
     public void onItemClick(View view, int position) {
         Log.d(TAG, "Item #" + position + " pressed!");
+    }
+
+    private List<ApplicationInfo> getInstalledAppsList(){
+        List<ApplicationInfo> appInfo = getPackageManager().getInstalledApplications(0);
+        return appInfo;
     }
 }
