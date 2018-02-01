@@ -1,27 +1,29 @@
 package eu.flatworks.cobwebcleaner;
 
-import android.content.Context;
 import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
+import android.content.pm.PackageInfo;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import eu.flatworks.cobwebcleaner.util.AppListAdapter;
+import eu.flatworks.cobwebcleaner.util.AppListItem;
 
 public class MainActivity extends AppCompatActivity implements AppListAdapter.ItemClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.main_rv_apps) RecyclerView mAppsList;
     private AppListAdapter mAdapter;
-    private List<ApplicationInfo> mAppInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,28 +31,33 @@ public class MainActivity extends AppCompatActivity implements AppListAdapter.It
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        // set up the RecyclerView
-        updateAppsList();
         mAppsList.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new AppListAdapter(this, mAppInfoList);
+        mAdapter = new AppListAdapter(this, getInstalledApps());
         mAdapter.setClickListener(this);
         mAppsList.setAdapter(mAdapter);
-        getInstalledAppsList();
     }
 
     @Override
     public void onItemClick(View view, int position) {
         Log.d(TAG, "Item #" + position + " pressed!");
+        Toast.makeText(this, "Item " + position + " clicked!", Toast.LENGTH_SHORT).show();
     }
 
-    //Returns a List of ApplicationInfo for all the apps installed on the device
-    private List<ApplicationInfo> getInstalledAppsList(){
-        List<ApplicationInfo> appInfo = getPackageManager().getInstalledApplications(0);
-        Log.d(TAG, "Installed App Count - " + appInfo.size());
-        return appInfo;
+    private List<AppListItem> getInstalledApps() {
+        List<AppListItem> res = new ArrayList<>();
+        List<PackageInfo> packs = getPackageManager().getInstalledPackages(0);
+        for (int i = 0; i < packs.size(); i++) {
+            PackageInfo p = packs.get(i);
+            if (!isSystemPackage(p)) {
+                String appName = p.applicationInfo.loadLabel(getPackageManager()).toString();
+                Drawable icon = p.applicationInfo.loadIcon(getPackageManager());
+                res.add(new AppListItem(appName, icon));
+            }
+        }
+        return res;
     }
 
-    private void updateAppsList() {
-        mAppInfoList = getInstalledAppsList();
+    private boolean isSystemPackage(PackageInfo pkgInfo) {
+        return ((pkgInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
     }
 }

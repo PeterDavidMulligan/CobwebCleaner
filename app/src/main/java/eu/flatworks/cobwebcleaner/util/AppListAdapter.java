@@ -6,12 +6,13 @@
 package eu.flatworks.cobwebcleaner.util;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,14 +20,16 @@ import java.util.List;
 import eu.flatworks.cobwebcleaner.R;
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
-    private List<ApplicationInfo> mData = Collections.emptyList();
+    private static final String TAG = AppListAdapter.class.getSimpleName();
+
+    private List<AppListItem> mData = Collections.EMPTY_LIST;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    public AppListAdapter(Context context, List<ApplicationInfo> data) {
+    public AppListAdapter(Context context, List<AppListItem> data) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = data;
+        mData = data;
     }
 
     // inflates the row layout from xml when needed
@@ -39,7 +42,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     // binds the data to the textview in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String appName = mData.get(position).name;
+        String appName = mData.get(position).getName();
         holder.appNameTextView.setText(appName);
     }
 
@@ -60,6 +63,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
             itemView.setOnClickListener(this);
         }
 
+        //called when item is clicked
         @Override
         public void onClick(View view) {
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
@@ -67,7 +71,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     }
 
     // convenience method for getting data at click position
-    public ApplicationInfo getItem(int id) {
+    public AppListItem getItem(int id) {
         return mData.get(id);
     }
 
