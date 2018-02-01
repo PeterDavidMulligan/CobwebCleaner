@@ -9,17 +9,20 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import eu.flatworks.cobwebcleaner.util.AppListAdapter;
 
 public class MainActivity extends AppCompatActivity implements AppListAdapter.ItemClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
-
-    AppListAdapter mAdapter;
+    @BindView(R.id.main_rv_apps) RecyclerView mAppsList;
+    private AppListAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         // data to populate the RecyclerView with
         ArrayList<String> animalNames = new ArrayList<>();
@@ -29,11 +32,10 @@ public class MainActivity extends AppCompatActivity implements AppListAdapter.It
         animalNames.add("Whatsapp");
 
         // set up the RecyclerView
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_rv_apps);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAppsList.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new AppListAdapter(this, animalNames);
         mAdapter.setClickListener(this);
-        recyclerView.setAdapter(mAdapter);
+        mAppsList.setAdapter(mAdapter);
     }
 
     @Override
