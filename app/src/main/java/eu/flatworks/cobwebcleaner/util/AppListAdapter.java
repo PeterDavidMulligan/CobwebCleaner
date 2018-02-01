@@ -6,6 +6,7 @@
 package eu.flatworks.cobwebcleaner.util;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,12 @@ import java.util.List;
 import eu.flatworks.cobwebcleaner.R;
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
-    private List<String> mData = Collections.emptyList();
+    private List<ApplicationInfo> mData = Collections.emptyList();
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
 
     // data is passed into the constructor
-    public AppListAdapter(Context context, List<String> data) {
+    public AppListAdapter(Context context, List<ApplicationInfo> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
     }
@@ -38,8 +39,8 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     // binds the data to the textview in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String app = mData.get(position);
-        holder.appNameTextView.setText(app);
+        String appName = mData.get(position).name;
+        holder.appNameTextView.setText(appName);
     }
 
     // total number of rows
@@ -66,7 +67,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     }
 
     // convenience method for getting data at click position
-    public String getItem(int id) {
+    public ApplicationInfo getItem(int id) {
         return mData.get(id);
     }
 
