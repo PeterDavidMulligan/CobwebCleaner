@@ -1,5 +1,6 @@
 package eu.flatworks.cobwebcleaner;
 
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements AppListAdapter.It
     private static final String TAG = MainActivity.class.getSimpleName();
     @BindView(R.id.main_rv_apps) RecyclerView mAppsList;
     private AppListAdapter mAdapter;
+    private List<ApplicationInfo> mAppInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,18 +29,13 @@ public class MainActivity extends AppCompatActivity implements AppListAdapter.It
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        // data to populate the RecyclerView with
-        ArrayList<String> animalNames = new ArrayList<>();
-        animalNames.add("Facebook");
-        animalNames.add("Messaging");
-        animalNames.add("Pokemon GO");
-        animalNames.add("Whatsapp");
-
         // set up the RecyclerView
+        updateAppsList();
         mAppsList.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new AppListAdapter(this, animalNames);
+        mAdapter = new AppListAdapter(this, mAppInfoList);
         mAdapter.setClickListener(this);
         mAppsList.setAdapter(mAdapter);
+        getInstalledAppsList();
     }
 
     @Override
@@ -46,8 +43,14 @@ public class MainActivity extends AppCompatActivity implements AppListAdapter.It
         Log.d(TAG, "Item #" + position + " pressed!");
     }
 
+    //Returns a List of ApplicationInfo for all the apps installed on the device
     private List<ApplicationInfo> getInstalledAppsList(){
         List<ApplicationInfo> appInfo = getPackageManager().getInstalledApplications(0);
+        Log.d(TAG, "Installed App Count - " + appInfo.size());
         return appInfo;
+    }
+
+    private void updateAppsList() {
+        mAppInfoList = getInstalledAppsList();
     }
 }
