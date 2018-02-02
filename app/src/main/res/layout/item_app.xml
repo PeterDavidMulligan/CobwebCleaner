@@ -6,6 +6,11 @@
     android:orientation="horizontal"
     android:padding="10dp">
 
+    <ImageView
+        android:id="@+id/main_iv_appIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <TextView
         android:id="@+id/main_tv_appName"
         android:layout_width="wrap_content"
