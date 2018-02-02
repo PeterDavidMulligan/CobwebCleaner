@@ -14,7 +14,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import eu.flatworks.cobwebcleaner.util.AppListAdapter;
@@ -43,20 +42,22 @@ public class MainActivity extends AppCompatActivity implements AppListAdapter.It
         Toast.makeText(this, "Item " + position + " clicked!", Toast.LENGTH_SHORT).show();
     }
 
+    //returns a list of AppListItems that contains all the non-system (user) apps
     private List<AppListItem> getInstalledApps() {
-        List<AppListItem> res = new ArrayList<>();
+        List<AppListItem> apps = new ArrayList<>();
         List<PackageInfo> packs = getPackageManager().getInstalledPackages(0);
         for (int i = 0; i < packs.size(); i++) {
             PackageInfo p = packs.get(i);
             if (!isSystemPackage(p)) {
                 String appName = p.applicationInfo.loadLabel(getPackageManager()).toString();
                 Drawable icon = p.applicationInfo.loadIcon(getPackageManager());
-                res.add(new AppListItem(appName, icon));
+                apps.add(new AppListItem(appName, icon));
             }
         }
-        return res;
+        return apps;
     }
 
+    //checks if an app is a system app or not
     private boolean isSystemPackage(PackageInfo pkgInfo) {
         return ((pkgInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
     }
