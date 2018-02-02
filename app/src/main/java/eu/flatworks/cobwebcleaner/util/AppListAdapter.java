@@ -6,17 +6,19 @@
 package eu.flatworks.cobwebcleaner.util;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import eu.flatworks.cobwebcleaner.R;
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
@@ -25,11 +27,13 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     private List<AppListItem> mData = Collections.EMPTY_LIST;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    private Context mContext;
 
     // data is passed into the constructor
     public AppListAdapter(Context context, List<AppListItem> data) {
         this.mInflater = LayoutInflater.from(context);
         mData = data;
+        mContext = context;
     }
 
     // inflates the row layout from xml when needed
@@ -42,8 +46,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     // binds the data to the textview in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String appName = mData.get(position).getName();
-        holder.appNameTextView.setText(appName);
+        Drawable icon = mData.get(position).getIcon();
+        String name = mData.get(position).getName();
+        holder.appIcon.setImageDrawable(icon);
+        holder.appName.setText(name);
     }
 
     // total number of rows
@@ -55,11 +61,14 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView appNameTextView;
+        @BindView(R.id.main_iv_appIcon)
+        ImageView appIcon;
+        @BindView(R.id.main_tv_appName)
+        TextView appName;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            appNameTextView = (TextView) itemView.findViewById(R.id.main_tv_appName);
+            ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
         }
 
@@ -70,7 +79,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         }
     }
 
-    // convenience method for getting data at click position
+    // convenience method for getting data at id position
     public AppListItem getItem(int id) {
         return mData.get(id);
     }
