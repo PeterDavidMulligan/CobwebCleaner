@@ -8,7 +8,8 @@ package eu.flatworks.cobwebcleaner;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class LauncherActivity extends AppCompatActivity {
+public class PermissionActivity extends AppCompatActivity {
+    private static final String TAG = PermissionActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
