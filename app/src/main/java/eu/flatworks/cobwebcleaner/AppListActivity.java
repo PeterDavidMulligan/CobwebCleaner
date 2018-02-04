@@ -19,8 +19,8 @@ import butterknife.ButterKnife;
 import eu.flatworks.cobwebcleaner.util.AppListAdapter;
 import eu.flatworks.cobwebcleaner.util.AppListItem;
 
-public class MainActivity extends AppCompatActivity implements AppListAdapter.ItemClickListener {
-    private static final String TAG = MainActivity.class.getSimpleName();
+public class AppListActivity extends AppCompatActivity implements AppListAdapter.ItemClickListener {
+    private static final String TAG = AppListActivity.class.getSimpleName();
     @BindView(R.id.main_rv_apps) RecyclerView mAppsList;
     private AppListAdapter mAdapter;
 
