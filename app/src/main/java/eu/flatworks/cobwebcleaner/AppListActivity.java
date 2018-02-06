@@ -1,5 +1,6 @@
 package eu.flatworks.cobwebcleaner;
 
+import android.app.usage.UsageStats;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
@@ -29,6 +30,7 @@ public class AppListActivity extends AppCompatActivity implements AppListAdapter
     private static final String TAG = AppListActivity.class.getSimpleName();
     @BindView(R.id.main_rv_apps) RecyclerView mAppsList;
     private AppListAdapter mAdapter;
+    private List<UsageStats> mStats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +38,20 @@ public class AppListActivity extends AppCompatActivity implements AppListAdapter
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        mStats = getIntent().getParcelableArrayListExtra(PermissionActivity.EXTRA_STATS);
+
         mAppsList.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new AppListAdapter(this, getInstalledApps());
         mAdapter.setClickListener(this);
         mAppsList.setAdapter(mAdapter);
     }
 
+    /**
+     * Responds to user clicking on a RecyclerView item by launching an AppDetailsActivity for
+     * the selected app.
+     * @param view View being clicked
+     * @param position Position of view in RecyclerView
+     */
     @Override
     public void onItemClick(View view, int position) {
         Log.d(TAG, "Item #" + position + " pressed!");
