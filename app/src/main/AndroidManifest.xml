@@ -7,6 +7,7 @@
     package="eu.flatworks.cobwebcleaner">
 
     <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:remove="android:maxSdkVersion"
         tools:ignore="ProtectedPermissions" />
 
     <application
