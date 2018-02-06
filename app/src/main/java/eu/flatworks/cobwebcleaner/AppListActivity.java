@@ -71,7 +71,9 @@ public class AppListActivity extends AppCompatActivity implements AppListAdapter
             if (!isSystemPackage(p)) {
                 String appName = p.applicationInfo.loadLabel(getPackageManager()).toString();
                 Drawable icon = p.applicationInfo.loadIcon(getPackageManager());
-                apps.add(new AppListItem(appName, icon));
+                long lastUsed = mStats.get(i).getLastTimeUsed();
+                long uptime = mStats.get(i).getTotalTimeInForeground();
+                apps.add(new AppListItem(appName, icon, lastUsed, uptime));
             }
         }
         return apps;
