@@ -30,7 +30,7 @@ import java.util.List;
  */
 public class PermissionActivity extends AppCompatActivity {
     private static final String TAG = PermissionActivity.class.getSimpleName();
-    public static final String EXTRA_STATS = "stats";
+    public static final String EXTRA_STATS = "stats_extra";
     private List<UsageStats> mStats = Collections.EMPTY_LIST;
 
     @Override
@@ -43,6 +43,9 @@ public class PermissionActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
+        /*This is called on restart because when a user presses 'back' while on the Usage Access
+          screen, onRestart is called, so we have to check did they actually change the permission.
+         */
         enforceUsageStatsPermissions(this);
     }
 
