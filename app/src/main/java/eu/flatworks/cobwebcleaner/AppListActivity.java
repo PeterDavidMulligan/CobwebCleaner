@@ -19,6 +19,12 @@ import butterknife.ButterKnife;
 import eu.flatworks.cobwebcleaner.util.AppListAdapter;
 import eu.flatworks.cobwebcleaner.util.AppListItem;
 
+/**
+ * AppListActivity is the main activity for the app. It contains a RecyclerView with clickable list
+ * items representing each of the user installed apps. Clicking a list item will take the user to a
+ * AppDetailsActivity that displays all of the apps details, and allows them to uninstall the
+ * selected app.
+ */
 public class AppListActivity extends AppCompatActivity implements AppListAdapter.ItemClickListener {
     private static final String TAG = AppListActivity.class.getSimpleName();
     @BindView(R.id.main_rv_apps) RecyclerView mAppsList;
@@ -42,7 +48,11 @@ public class AppListActivity extends AppCompatActivity implements AppListAdapter
         Toast.makeText(this, "Item " + position + " clicked!", Toast.LENGTH_SHORT).show();
     }
 
-    //returns a list of AppListItems that contains all the non-system (user) apps
+    /**
+     * Returns a List containing custom objects representing each of the user installed apps on the
+     * device.
+     * @return The List of user installed apps.
+     */
     private List<AppListItem> getInstalledApps() {
         List<AppListItem> apps = new ArrayList<>();
         List<PackageInfo> packs = getPackageManager().getInstalledPackages(0);
@@ -57,7 +67,11 @@ public class AppListActivity extends AppCompatActivity implements AppListAdapter
         return apps;
     }
 
-    //checks if an app is a system app or not
+    /**
+     * Convenience app that checks if an app is flagged a system app.
+     * @param pkgInfo The PackageInfo of the app to check.
+     * @return Returns true if a system app, false if not.
+     */
     private boolean isSystemPackage(PackageInfo pkgInfo) {
         return ((pkgInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0);
     }
