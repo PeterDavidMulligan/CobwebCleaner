@@ -29,13 +29,11 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     private List<AppListItem> mData = Collections.EMPTY_LIST;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
-    private Context mContext;
 
     // data is passed into the constructor
     public AppListAdapter(Context context, List<AppListItem> data) {
         this.mInflater = LayoutInflater.from(context);
         mData = data;
-        mContext = context;
     }
 
     // inflates the row layout from xml when needed
@@ -52,6 +50,8 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         String name = mData.get(position).getName();
         holder.appIcon.setImageDrawable(icon);
         holder.appName.setText(name);
+        String lastUsed = getDateFromTimeStamp(mData.get(position).getLastUsedTime());
+        holder.appLastUsed.setText(lastUsed);
     }
 
     // total number of rows
@@ -67,6 +67,8 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         ImageView appIcon;
         @BindView(R.id.main_tv_appName)
         TextView appName;
+        @BindView(R.id.main_tv_lastUsed)
+        TextView appLastUsed;
 
         public ViewHolder(View itemView) {
             super(itemView);
