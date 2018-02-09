@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,9 +44,6 @@ public class PermissionActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        /*This is called on restart because when a user presses 'back' while on the Usage Access
-          screen, onRestart is called, so we have to check did they actually change the permission.
-         */
         enforceUsageStatsPermissions(this);
     }
 
@@ -76,11 +74,14 @@ public class PermissionActivity extends AppCompatActivity {
         if (mode != AppOpsManager.MODE_ALLOWED) { return false; }
 
         //Create a usage stats manager, use it to get a list of usage stats
-        final long now = System.currentTimeMillis();
+        Calendar now = Calendar.getInstance();
+        Calendar then = Calendar.getInstance();
+        then.add(Calendar.YEAR, -1);
         final UsageStatsManager mUsageStatsManager =
                 (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
         final List<UsageStats> stats =
-                mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, now - 1000 * 10, now);
+                mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY,
+                        then.getTimeInMillis(), now.getTimeInMillis());
 
         //Check that list is not null or empty. If it isn't, store it in mStats and confirm
         //the user has permission
