@@ -100,7 +100,14 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
 
     private String getDateFromTimeStamp(long timestamp) {
         Date date = new Date(timestamp);
-        SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy HH:mm");
-        return format.format(date);
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy - HH:mm");
+        String dateString;
+        if(timestamp != 0) {
+            dateString = format.format(date);
+        }
+        else {
+            dateString = "N/A";
+        }
+        return dateString;
     }
 }
